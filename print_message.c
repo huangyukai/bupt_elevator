@@ -1,12 +1,13 @@
 /***********************************************************
-文件名称：输出
-作 者： 黄昱恺
-版 本： 1.0
-说 明： 输出电梯所有参数
-电梯状态、当前楼层、目标楼层、电梯所有按钮状态
-修改记录：
+	文件名称：输出
+	作 者： 黄昱恺
+	版 本： 1.0
+	说 明： 输出电梯所有参数
+			电梯状态、当前楼层、目标楼层、电梯所有按钮状态
+	修改记录：
 ***********************************************************/
 #include <stdio.h>
+#include <time.h>
 #include <windows.h>
 #include "initialize.h"
 #include "sharedVariables.h"
@@ -19,11 +20,13 @@ extern int buttonUp[10];
 extern int buttonDown[10];
 extern int buttonNumber[10];
 extern int Profile;//电梯控制策略 默认为策略A(顺便服务策略)
-extern double totalTime[5];
-extern double eachNumber[5];
-extern double averageTime[5];
+extern double totalTime[7];
+extern double eachNumber[7];
+extern double averageTime[7];
 extern double restTime;
 extern int ignore;
+
+
 /***********************************************************
 	函数名称： buttonstation()
 	函数功能： 判断所有按钮目前的状态并输出状态
@@ -36,7 +39,6 @@ void buttonstation(void)
     int i;
     printf("按钮状态\n");
 
-    //listPrint();
     for (i = 1; i <= 9; i++)
     {
 
@@ -84,141 +86,152 @@ void print_message(void)
 {
     int i;
 
-    initialize();
 
+    system("cls");//清屏
 
-    while(1)
+    printf("电梯状态");
+
+    //输出策略类型
+    switch(Profile)
     {
+        case
+                A:
+            printf("（电梯使用策略为A）:\n");
+            break;
 
-        Sleep(700);
-        system("cls");
+        case
+                B:
+            printf("（电梯使用策略为B）:\n");
+            break;
 
-        printf("电梯状态");
+        case
+                C:
+            printf("（电梯使用策略为C）:\n");
+            break;
 
-        switch(Profile)
+        case
+                D:
+            printf("（电梯使用策略为D）:\n");
+            break;
+
+        case
+                E:
+            printf("（电梯使用策略为E）:\n");
+            break;
+
+        case
+                F:
+            printf("（电梯使用策略为F）:\n");
+            break;
+    }
+
+    //输出电梯状态
+    if (state == IDLE)
+
+
+    {
+        printf("	电梯空闲\n	门关闭\n");
+    }
+
+    if (state == RUN)
+    {
+        if (nextFloor == -1)
+        {
+            printf("	电梯长时间无人使用，正在回到1层\n	门关闭\n");
+        }
+
+        if(moveDirection == UP && nextFloor >= 0)
+        {
+            printf("	电梯正在向上运动\n	门关闭\n");
+        }
+
+        if(moveDirection == DOWN && nextFloor >= 0)
+
+        {
+            printf("	电梯正在向下运动\n	门关闭\n");
+        }
+    }
+    else
+    {
+        if (state == STOP && restTime >= 0)
+        {
+            printf("	电梯停靠···     停靠时间剩余：%.2f秒\n	门打开\n", restTime);
+        }
+    }
+
+    //输出电梯楼层
+    printf("	电梯正在第%d层\n", currentFloor);
+
+    if ((nextFloor != 0) && (nextFloor != currentFloor) && (nextFloor > 0))
+    {
+        printf("	电梯运行目标为第%d层\n", nextFloor);
+    }
+    else
+    {
+        printf("\n");
+    }
+
+    //输出按钮状态
+    buttonstation();
+
+    //统计输出
+    printf("统计数据（平均每个响应的耗时）:\n");
+
+    for (i = A; i <= F; i++)
+    {
+        switch(i)
         {
             case
                     A:
-                printf("（电梯使用策略为A）:\n");
+                printf("	A策略:");
                 break;
 
             case
                     B:
-                printf("（电梯使用策略为B）:\n");
+                printf("B策略:");
                 break;
 
             case
                     C:
-                printf("（电梯使用策略为C）:\n");
+                printf("C策略:");
                 break;
 
             case
                     D:
-                printf("（电梯使用策略为D）:\n");
+                printf("\n");
+                printf("	D策略:");
                 break;
+
+            case
+                    E:
+                printf("E策略:");
+                break;
+
+            case
+                    F:
+                printf("F策略:");
+                break;
+
         }
 
-
-
-
-        if (state == IDLE)
-
-
+        if (eachNumber[i] > 0.001)
         {
-            printf("	电梯空闲\n	门关闭\n");
-        }
-
-        if (state == RUN)
-        {
-            if (nextFloor < 0)
-            {
-                printf("	电梯长时间无人使用，正在回到1层\n	门关闭\n");
-            }
-
-            if(moveDirection == UP && nextFloor >= 0)
-            {
-                printf("	电梯正在向上运动\n	门关闭\n");
-            }
-
-            if(moveDirection == DOWN && nextFloor >= 0)
-
-            {
-                printf("	电梯正在向下运动\n	门关闭\n");
-            }
+            printf("%5.2f秒   ", totalTime[i] / eachNumber[i]);
         }
         else
         {
-            if (state == STOP)
-            {
-                printf("	电梯停靠···     停靠时间剩余：%.2f秒\n	门打开\n", restTime);
-            }
-        }
-
-        printf("	电梯正在第%d层\n", currentFloor);
-
-        if ((nextFloor != 0) && (nextFloor != currentFloor) && (nextFloor > 0))
-        {
-            printf("	电梯运行目标为第%d层\n", nextFloor);
-        }
-        else
-        {
-            printf("\n");
+            printf("统计中    ");
         }
 
 
-        buttonstation();
-        printf("\n");
-        printf("统计数据（平均每个响应的耗时）:\n");
 
-        for (i = A; i <= D; i++)
-        {
-            switch(i)
-            {
-                case
-                        A:
-                    printf("	A策略:");
-                    break;
-
-                case
-                        B:
-                    printf("B策略:");
-                    break;
-
-                case
-                        C:
-                    printf("C策略:");
-                    break;
-
-                case
-                        D:
-                    printf("D策略:");
-                    break;
-            }
-
-            if (eachNumber[i] > 0.5)
-            {
-
-
-
-
-                printf("%5.2f秒   ", totalTime[i] / eachNumber[i]);
-            }
-            else
-            {
-                printf("统计中    ");
-            }
-
-        }
-
-        printf("\n");
-
-
-        printf("\n请从键盘输入请求来控制电梯运行：(输入后无需回车)    键盘输入G代表Go按钮\n");
-        printf("键盘输入q w e r t y u i分别代表第1 2 3 4 5 6 7 8层有向上呼叫\n");
-        printf("键盘输入a s d f g h j k分别代表第2 3 4 5 6 7 8 9层有向下呼叫\n");
-        printf("键盘输入1 2 3 4 5 6 7 8 9分别代表电梯内部有第1 2 3 4 5 6 7 8 9层呼叫\n");
-        printf("键盘输入A B C D代表在A B C D策略间切换\n");
     }
 
+    //输入提示
+    printf("\n请从键盘输入请求来控制电梯运行：(输入后无需回车)    键盘输入G代表Go按钮\n");
+    printf("键盘输入q w e r t y u i分别代表第1 2 3 4 5 6 7 8层有向上呼叫\n");
+    printf("键盘输入a s d f g h j k分别代表第2 3 4 5 6 7 8 9层有向下呼叫\n");
+    printf("键盘输入1 2 3 4 5 6 7 8 9分别代表电梯内部有第1 2 3 4 5 6 7 8 9层呼叫\n");
+    printf("键盘输入A B C D E F代表在A B C D E F策略间切换\n");
 
 }

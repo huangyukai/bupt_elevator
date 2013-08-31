@@ -1,0 +1,11 @@
+void lightOn(char input);
+void lightOff(char input);
+void initializeanimation(void);
+void elevatorMove(double rate);
+void openDoor(void)	;
+int closeDoor(void);
+void arriveSound(void);
+void showFloor(void);
+void gosound(void);
+void showDirection_run(int is_showDirection_stop_call);
+void showDirection_stop(void);

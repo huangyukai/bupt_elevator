@@ -1,5 +1,5 @@
-#ifndef Firesun
-#define Firesun
+#ifndef SHAREDVARIABLES
+#define SHAREDVARIABLES
 struct listNode
 {
     char data;
@@ -17,10 +17,8 @@ typedef LISTNODE * LISTNODEPTR;
 #define A 1//策略A 顺便服务策略
 #define B 2//策略B
 #define C 3//策略C
-#define D 4
-
-
-
-
+#define D 4//策略D
+#define E 5//策略E
+#define F 6//策略F
 
 #endif

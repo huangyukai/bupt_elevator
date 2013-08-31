@@ -40,6 +40,7 @@ RSC=rc.exe
 # PROP Use_Debug_Libraries 0
 # PROP Output_Dir "Release"
 # PROP Intermediate_Dir "Release"
+# PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /YX /FD /c
@@ -52,7 +53,8 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /machine:I386
+# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /machine:I386
+# SUBTRACT LINK32 /pdb:none
 
 !ELSEIF  "$(CFG)" == "elevator - Win32 Debug"
 
@@ -78,7 +80,7 @@ BSC32=bscmake.exe
 # ADD BSC32 /nologo
 LINK32=link.exe
 # ADD BASE LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /debug /machine:I386 /pdbtype:sept
-# ADD LINK32 kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
+# ADD LINK32 Msimg32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:console /debug /machine:I386 /pdbtype:sept
 # SUBTRACT LINK32 /pdb:none
 
 !ENDIF 
@@ -96,11 +98,35 @@ SOURCE=.\control.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\egg\egg.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\egg\event.c
+# End Source File
+# Begin Source File
+
 SOURCE=.\getInput.c
 # End Source File
 # Begin Source File
 
+SOURCE=.\egg\graphic.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\graphical_interface.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\icon.rc
+# End Source File
+# Begin Source File
+
 SOURCE=.\initialize.c
+# End Source File
+# Begin Source File
+
+SOURCE=.\IO.c
 # End Source File
 # Begin Source File
 
@@ -128,11 +154,35 @@ SOURCE=.\control.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\egg.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\egg\egg_priv.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\egg\event.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\getInput.h
 # End Source File
 # Begin Source File
 
+SOURCE=.\egg\graphic.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\graphical_interface.h
+# End Source File
+# Begin Source File
+
 SOURCE=.\initialize.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\IO.h
 # End Source File
 # Begin Source File
 
@@ -141,6 +191,10 @@ SOURCE=.\list.h
 # Begin Source File
 
 SOURCE=.\print_message.h
+# End Source File
+# Begin Source File
+
+SOURCE=.\resource.h
 # End Source File
 # Begin Source File
 
@@ -154,6 +208,14 @@ SOURCE=.\state_trans.h
 # Begin Group "Resource Files"
 
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe"
+# Begin Source File
+
+SOURCE=.\img\elevator.ico
+# End Source File
+# Begin Source File
+
+SOURCE=.\img\mouse.cur
+# End Source File
 # End Group
 # End Target
 # End Project
